@@ -1,28 +1,32 @@
 import React from "react";
 import { RevealOnScroll } from "./revealOnScroll";
 import emailjs from "emailjs-com";
+import { Result } from "postcss";
 const Contact = () => {
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
     message: "",
   });
-
+  const SERVICE_ID = "service_p5iwack"; 
+  const TEMPLATE_ID = "template_m1yg35j";
+  const PUBLIC_KEY = "-pBGTyufpiJIGCAPX";
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    emailjs
-      .sendForm(
-        import.meta.env.SERVICE_ID,
-        import.meta.env.TEMPLATE_ID,
-        e.target,
-        import.meta.env.PUBLIC_KEY
-      )
-      .then((result) => {
-        alert("Message sent successfully!");
-        // Reset the form when there is a successfully send the message
-        setFormData({ name: "", email: "", message: "" });
+    emailjs.sendForm(SERVICE_ID , TEMPLATE_ID, e.target, PUBLIC_KEY)
+    .then((Result) => {
+      alert("Message sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        message: ""
       })
-      .catch(() => alert("Something went wrong Please Try Again!"));
+    })
+    .catch((error) => {
+      console.error("Error sending message:", error);
+      alert("Failed to send message. Please try again later.");
+    })
   };
   return (
     <section
